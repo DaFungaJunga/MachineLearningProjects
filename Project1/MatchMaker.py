@@ -55,6 +55,7 @@ match['Low'] = fuzz.trimf(match.universe, [0, 0, 33])
 match['Medium'] = fuzz.trimf(match.universe, [0, 33, 67])
 match['High'] = fuzz.trimf(match.universe, [67, 100, 100])
 
+
 rule1 = ctrl.Rule(age['Legal'] & sexualO['Match'] | age['Legal'] & sexualO['Semi-Match'], match['Medium'])
 rule2 = ctrl.Rule(education['poor'], match['Low'])
 rule3 = ctrl.Rule(age['Not Legal'], match['Low'])
@@ -105,6 +106,8 @@ matching.compute()
 
 print(matching.output['Match Likelihood'])
 rule1.view()
+match.view()
+time.sleep(2)
 match.view(sim=matching)
-while 1:
-    print(1)
+#while 1:
+#    print(1)
