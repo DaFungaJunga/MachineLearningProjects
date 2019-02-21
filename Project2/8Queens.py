@@ -106,7 +106,7 @@ class Queens:
                     for j in range(8):
                         if j ==r:
                             self.boards[p,i,j]=1
-                        else
+                        else:
                             self.boards[p,i,j]=0
                 else:
                     continue
