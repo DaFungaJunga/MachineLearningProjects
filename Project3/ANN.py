@@ -144,6 +144,7 @@ class ANN:
         self.output = np.empty(10)
         self.desiredOutput = np.empty(10)
         self.epochs = epochs
+        self.sumSquareError = np.empty(epochs)
         self.number = number
         self.threshold = 0.2
         self.learningRate = 0.2
@@ -189,11 +190,17 @@ class ANN:
                     self.output[p] = 1
                 else:
                     self.output[p] = 0
+            mean = 0
             for p in range(self.hiddenPerceptrons.__sizeof__()):
+                mean += self.desiredOutput[p] - self.output[p]
                 for i in range(9):
                     for j in range(5):
                         self.hiddenPerceptrons[p].updateWeight(i, j, self.workingBitmap.bitmap[i][j],
-                                                         (self.desiredOutput[p] - self.output[p]), self.learningRate)
+                                                               (self.desiredOutput[p] - self.output[p]),
+                                                               self.learningRate)
+            mean = mean / self.hiddenPerceptrons.__sizeof__()
+            for p in range(self.hiddenPerceptrons.__sizeof__()):
+                self.sumSquareError[count] += ((self.desiredOutput[p] - self.output[p]) - mean) ** 2
             print("Epoch: " + str(count) + " Desired Output: " + str(self.desiredOutput) + "Current Output: " + str(
                 self.output))
             count += 1
