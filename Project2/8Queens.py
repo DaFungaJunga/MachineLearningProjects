@@ -1,39 +1,41 @@
 import numpy as np
 from random import randint
 import random
+
 class Queens:
 
-    def __init__(self,population):
+    def __init__(self, population):
         self.population = population
         self.boards = np.zeros((8, 8, self.population))
         self.fitnessCounts = np.empty(self.population)
         self.mutationCO = 0.01
         self.crossoverCO = 0.7
+
     def initialize(self):
         for p in range(self.population):
             for j in range(8):
-                r =randint(0,7)
-                self.boards[p,j,r] = 1
+                r = randint(0, 7)
+                self.boards[p, j, r] = 1
 
-    def checkRows(self,x,y,board):
-        errorCount=0
+    def checkRows(self, x, y, board):
+        errorCount = 0
         for i in range(8):
-            if x ==i:
+            if x == i:
                 continue
-            if board[i,y]==1:
-                errorCount +=1
+            if board[i, y] == 1:
+                errorCount += 1
         return errorCount
 
     def checkColumns(self,x,y,board):
-        errorCount=0
+        errorCount = 0
         for i in range(8):
-            if y ==i:
+            if y == i:
                 continue
-            if board[x,i]==1:
-                errorCount +=1
+            if board[x, i] == 1:
+                errorCount += 1
         return errorCount
 
-    def checkDiagonal(self,x,y,board):
+    def checkDiagonal(self, x, y, board):
         errorCount=0
         for i in range(8):
             if i==0:
@@ -67,9 +69,9 @@ class Queens:
                 if board[x, i] == 1:
                     errorCount += 1
             #Check Rows
-            if x !=i:
-                if board[i,y]==1:
-                    errorCount +=1
+            if x != i:
+                if board[i, y] == 1:
+                    errorCount += 1
         return errorCount
 
     def fitness(self):
@@ -77,26 +79,27 @@ class Queens:
             errorCount = 0
             for i in range(8): #x
                 for j in range(8): #y
-                    if self.boards[p,i,j]==1:
-                        errorCount+=self.check(i,j,self.boards[p,:,:])
+                    if self.boards[p, i, j] == 1:
+                        errorCount += self.check(i, j, self.boards[p, :, :])
                     else:
                         continue
-            self.fitnessCounts[p]=errorCount
+            self.fitnessCounts[p] = errorCount
+
 
 
     def uniformCrossover(self):
-        for p in range(5):
+        for p in range(4):
             max1 = np.argmax(self.fitnessCounts)
-            self.fitnessCounts = np.delete(self.fitnessCounts,max1)
+            self.fitnessCounts = np.delete(self.fitnessCounts, max1)
             max2 = np.argmax(self.fitnessCounts)
-            self.fitnessCounts = np.delete(self.fitnessCounts,max2)
+            self.fitnessCounts = np.delete(self.fitnessCounts, max2)
 
             for i in range(8):
-                if random.uniform(0, 1) <self.crossoverCO:
+                if random.uniform(0, 1) < self.crossoverCO:
                     for j in range(8):
-                        temp = self.boards[max1,i,j]
-                        self.boards[max1,i,j] = self.boards[max2,i,j]
-                        self.boards[max2,i,j] = temp
+                        temp = self.boards[max1, i, j]
+                        self.boards[max1, i, j] = self.boards[max2, i, j]
+                        self.boards[max2, i, j] = temp
 
     def mutation(self):
         for p in range(self.population):
@@ -105,18 +108,19 @@ class Queens:
                     r = randint(0, 7)
                     for j in range(8):
                         if j ==r:
-                            self.boards[p,i,j]=1
+                            self.boards[p, i, j] = 1
                         else:
-                            self.boards[p,i,j]=0
+                            self.boards[p, i, j] = 0
                 else:
                     continue
+
     def checkFitness(self):
-        currentMinIndex =np.argmin(self.fitnessCounts)
-        if self.fitnessCounts[currentMinIndex]==0:
-            print(self.boards[currentMinIndex,:,:])
+        currentMinIndex = np.argmin(self.fitnessCounts)
+        if self.fitnessCounts[currentMinIndex] == 0:
+            print(self.boards[currentMinIndex, :, :])
             return False
         return True
-        
+
 
     def run(self):
         self.initialize()
@@ -125,3 +129,6 @@ class Queens:
             self.uniformCrossover()
             self.mutation()
             print(self.fitnessCounts)
+
+thing = Queens(8)
+thing.run()
