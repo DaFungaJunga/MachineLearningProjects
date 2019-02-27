@@ -89,10 +89,10 @@ class Queens:
 
     def uniformCrossover(self):
         for p in range(self.population):
-            max1 = np.argmax(self.fitnessCounts[p])
-            self.fitnessCounts[p] = np.delete(self.fitnessCounts[p], max1)
-            max2 = np.argmax(self.fitnessCounts[p])
-            self.fitnessCounts[p] = np.delete(self.fitnessCounts[p], max2)
+            max1 = np.argmax(self.fitnessCounts)
+            #self.fitnessCounts = np.delete(self.fitnessCounts, max1)
+            max2 = np.argmin(self.fitnessCounts)
+            #self.fitnessCounts = np.delete(self.fitnessCounts, max2)
 
             for i in range(8):
                 if random.uniform(0, 1) < self.crossoverCO:
@@ -107,7 +107,7 @@ class Queens:
                 if random.uniform(0, 1) < self.mutationCO:
                     r = randint(0, 7)
                     for j in range(8):
-                        if j ==r:
+                        if j == r:
                             self.boards[p, i, j] = 1
                         else:
                             self.boards[p, i, j] = 0
@@ -123,13 +123,19 @@ class Queens:
 
 
     def run(self):
+        gen = 0
         self.initialize()
         self.fitness()
         while self.checkFitness():
+            gen += 1
             self.uniformCrossover()
             self.mutation()
-            print(self.fitnessCounts)
             self.fitness()
+            if gen % 1000 == 0:
+                print(gen)
+                print(self.fitnessCounts)
+        print('Final Generation: ' + str(gen))
+
 
 thing = Queens(8)
 thing.run()
