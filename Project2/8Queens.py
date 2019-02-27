@@ -1,6 +1,7 @@
 import numpy as np
 from random import randint
 import random
+import matplotlib.pyplot as plt
 
 class Queens:
 
@@ -90,9 +91,8 @@ class Queens:
     def uniformCrossover(self):
         for p in range(self.population):
             max1 = np.argmax(self.fitnessCounts)
-            #self.fitnessCounts = np.delete(self.fitnessCounts, max1)
             max2 = np.argmin(self.fitnessCounts)
-            #self.fitnessCounts = np.delete(self.fitnessCounts, max2)
+
 
             for i in range(8):
                 if random.uniform(0, 1) < self.crossoverCO:
@@ -123,6 +123,17 @@ class Queens:
 
 
     def run(self):
+        Graphdata = []
+        e1 = []
+        e2 = []
+        e3 = []
+        e4 = []
+        e5 = []
+        e6 = []
+        e7 = []
+        e8 = []
+
+
         gen = 0
         self.initialize()
         self.fitness()
@@ -134,8 +145,55 @@ class Queens:
             if gen % 1000 == 0:
                 print(gen)
                 print(self.fitnessCounts)
-        print('Final Generation: ' + str(gen))
 
+                # Average
+                # Graphdata.append(sum(self.fitnessCounts) / len(self.fitnessCounts))
+
+                e1.append(self.fitnessCounts[0])
+                e2.append(self.fitnessCounts[1])
+                e3.append(self.fitnessCounts[2])
+                e4.append(self.fitnessCounts[3])
+                e5.append(self.fitnessCounts[4])
+                e6.append(self.fitnessCounts[5])
+                e7.append(self.fitnessCounts[6])
+                e8.append(self.fitnessCounts[7])
+
+        e1.append(self.fitnessCounts[0])
+        e2.append(self.fitnessCounts[1])
+        e3.append(self.fitnessCounts[2])
+        e4.append(self.fitnessCounts[3])
+        e5.append(self.fitnessCounts[4])
+        e6.append(self.fitnessCounts[5])
+        e7.append(self.fitnessCounts[6])
+        e8.append(self.fitnessCounts[7])
+
+        Graphdata.append(e1)
+        Graphdata.append(e2)
+        Graphdata.append(e3)
+        Graphdata.append(e4)
+        Graphdata.append(e5)
+        Graphdata.append(e6)
+        Graphdata.append(e7)
+        Graphdata.append(e8)
+
+        print(self.fitnessCounts)
+        print('Final Generation: ' + str(gen))
+        return Graphdata
 
 thing = Queens(8)
-thing.run()
+data = thing.run()
+
+# used for average graph
+# plt.plot(data)
+
+plt.plot(data[0], 'ro')
+plt.plot(data[1], 'ro')
+plt.plot(data[2], 'ro')
+plt.plot(data[3], 'ro')
+plt.plot(data[4], 'ro')
+plt.plot(data[5], 'ro')
+plt.plot(data[6], 'ro')
+plt.plot(data[7], 'ro')
+plt.ylabel('Errors')
+plt.xlabel('Generations (thousands)')
+plt.show()
