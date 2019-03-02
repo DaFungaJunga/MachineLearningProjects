@@ -123,16 +123,8 @@ class Queens:
 
 
     def run(self):
-        Graphdata = []
-        e1 = []
-        e2 = []
-        e3 = []
-        e4 = []
-        e5 = []
-        e6 = []
-        e7 = []
-        e8 = []
-
+        Averagedata = []
+        Fittest = []
 
         gen = 0
         self.initialize()
@@ -147,53 +139,21 @@ class Queens:
                 print(self.fitnessCounts)
 
                 # Average
-                # Graphdata.append(sum(self.fitnessCounts) / len(self.fitnessCounts))
-
-                e1.append(self.fitnessCounts[0])
-                e2.append(self.fitnessCounts[1])
-                e3.append(self.fitnessCounts[2])
-                e4.append(self.fitnessCounts[3])
-                e5.append(self.fitnessCounts[4])
-                e6.append(self.fitnessCounts[5])
-                e7.append(self.fitnessCounts[6])
-                e8.append(self.fitnessCounts[7])
-
-        e1.append(self.fitnessCounts[0])
-        e2.append(self.fitnessCounts[1])
-        e3.append(self.fitnessCounts[2])
-        e4.append(self.fitnessCounts[3])
-        e5.append(self.fitnessCounts[4])
-        e6.append(self.fitnessCounts[5])
-        e7.append(self.fitnessCounts[6])
-        e8.append(self.fitnessCounts[7])
-
-        Graphdata.append(e1)
-        Graphdata.append(e2)
-        Graphdata.append(e3)
-        Graphdata.append(e4)
-        Graphdata.append(e5)
-        Graphdata.append(e6)
-        Graphdata.append(e7)
-        Graphdata.append(e8)
+                Averagedata.append(sum(self.fitnessCounts) / len(self.fitnessCounts))
+                Fittest.append(np.argmin(self.fitnessCounts))
 
         print(self.fitnessCounts)
         print('Final Generation: ' + str(gen))
-        return Graphdata
+        return Fittest, Averagedata
 
 thing = Queens(8)
 data = thing.run()
 
 # used for average graph
-# plt.plot(data)
+plt.plot(data[0], label='Best')
+plt.plot(data[1], label='Average')
 
-plt.plot(data[0], 'ro')
-plt.plot(data[1], 'ro')
-plt.plot(data[2], 'ro')
-plt.plot(data[3], 'ro')
-plt.plot(data[4], 'ro')
-plt.plot(data[5], 'ro')
-plt.plot(data[6], 'ro')
-plt.plot(data[7], 'ro')
-plt.ylabel('Errors')
-plt.xlabel('Generations (thousands)')
+plt.ylabel('Error Counts')
+plt.xlabel('Generations (Thousands)')
+plt.title('Error Count vs. Generation')
 plt.show()
