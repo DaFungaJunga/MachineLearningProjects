@@ -213,12 +213,68 @@ class ANN:
             for p in range(self.perceptronNum):
                 self.sumSquareError[count] += ((self.desiredOutput[p] - self.output[p]) - mean) ** 2
 
-            print("Epoch: " + str(count) + " Desired Output: " + str(self.desiredOutput) + " Current Output: " + str(self.output))
             count += 1
 
+        plt.plot(self.sumSquareError)
+        plt.ylabel('Sum Square Error')
+        plt.xlabel('Epochs')
+        plt.title('Sum Square Error vs. Epochs (' + str(self.number) + ')')
+        plt.show()
+
+        print("For Bitmap: " + str(self.number))
+        print("Epoch: " + str(count) + " Desired Output: " + str(self.desiredOutput) + " Current Output: " + str(
+            self.output))
+        print("")
+        print("")
+        print("")
 
 
 
-ann = ANN(1000, 1, 2)
+
+
+
+Epochs = 1000
+Perceptrons = 10
+
+
+
+ann = ANN(Epochs, 0, Perceptrons)
 ann.initialization()
 ann.run()
+
+ann = ANN(Epochs, 1, Perceptrons)
+ann.initialization()
+ann.run()
+
+ann = ANN(Epochs, 2, Perceptrons)
+ann.initialization()
+ann.run()
+
+ann = ANN(Epochs, 3, Perceptrons)
+ann.initialization()
+ann.run()
+
+ann = ANN(Epochs, 4, Perceptrons)
+ann.initialization()
+ann.run()
+
+ann = ANN(Epochs, 5, Perceptrons)
+ann.initialization()
+ann.run()
+
+ann = ANN(Epochs, 6, Perceptrons)
+ann.initialization()
+ann.run()
+
+ann = ANN(Epochs, 7, Perceptrons)
+ann.initialization()
+ann.run()
+
+ann = ANN(Epochs, 8, Perceptrons)
+ann.initialization()
+ann.run()
+
+ann = ANN(Epochs, 9, Perceptrons)
+ann.initialization()
+ann.run()
+
