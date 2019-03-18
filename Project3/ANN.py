@@ -181,6 +181,8 @@ class ANN:
 
     def run(self):
         count = 0
+        print("For Bitmap: " + str(self.number))
+
         while count < self.epochs:
 
             for p in range(self.perceptronNum):
@@ -215,15 +217,17 @@ class ANN:
 
             count += 1
 
+            print("Epoch: " + str(count) + " Desired Output: " + str(self.desiredOutput) + " Current Output: " + str(
+                self.output))
+
+        plt.figure(self.number)
         plt.plot(self.sumSquareError)
         plt.ylabel('Sum Square Error')
         plt.xlabel('Epochs')
         plt.title('Sum Square Error vs. Epochs (' + str(self.number) + ')')
         plt.show()
 
-        print("For Bitmap: " + str(self.number))
-        print("Epoch: " + str(count) + " Desired Output: " + str(self.desiredOutput) + " Current Output: " + str(
-            self.output))
+
         print("")
         print("")
         print("")
@@ -233,7 +237,7 @@ class ANN:
 
 
 
-Epochs = 1000
+Epochs = 10
 Perceptrons = 10
 
 
