@@ -4,14 +4,11 @@ import matplotlib.pyplot as plt
 import matplotlib.cm as cm
 
 
-# from PIL import Image
-
-
 class DigitBitmap:
     def __init__(self):
         self.bitmap = np.empty([9, 5])
 
-    def initialize(self,num):
+    def initialize(self, num):
         if num == 1:
             arr = np.array([[0, 0, 1, 0, 0],
                             [0, 1, 1, 0, 0],
@@ -131,7 +128,7 @@ class Perceptron:
     def initializeWeights(self):
         for i in range(9):
             for j in range(5):
-                #self.weight[i][j] = random.uniform(-2.4/(9*5), 2.4/(9*5))
+                # self.weight[i][j] = random.uniform(-2.4/(9*5), 2.4/(9*5))
                 self.weight[i][j] = random.uniform(-0.5, 0.5)
 
     def updateWeight(self, i, j, inp, error, learningRate):
@@ -146,6 +143,7 @@ class ANN:
         self.desiredOutput = np.empty(10)
         self.epochs = epochs
         self.sumSquareError = np.empty(epochs)
+        self.sumSquareError = np.array(self.sumSquareError, dtype=np.float64)
         self.threshold = 0.2
         self.learningRate = 0.1
         self.perceptronNum = 10
@@ -183,7 +181,9 @@ class ANN:
     def run(self):
         for o in range(10):
             count = 0
+            startcount = 0
             self.currentDesiredOutput(o)
+            self.sumSquareError = np.empty(self.epochs)
 
             while count < self.epochs:
 
@@ -192,12 +192,13 @@ class ANN:
                     self.workingOutput[p] = 0
                     for i in range(9):
                         for j in range(5):
-                            self.workingOutput[p] += self.workingBitmap.bitmap[i][j] * self.hiddenPerceptrons[p].weight[i][j]
+                            self.workingOutput[p] += self.workingBitmap.bitmap[i][j] * \
+                                                     self.hiddenPerceptrons[p].weight[i][j]
 
                     # adjust threshold value when testing for better results
-                    #print(str(self.output[p]))
+                    # print(str(self.output[p]))
                     self.workingOutput[p] -= self.threshold
-                    #print(str(self.workingOutput[p]))
+                    # print(str(self.workingOutput[p]))
                     if self.workingOutput[p] >= 0:
                         self.output[p] = 1
                     else:
@@ -220,8 +221,19 @@ class ANN:
                 print(
                     "Epoch: " + str(count) + " Desired Output: " + str(self.desiredOutput) + " Current Output: " + str(
                         self.output) + "Sum Squared Error: " + str(self.sumSquareError[count]))
-                if self.sumSquareError[count] == 0:
-                    print("Solution Found, moving to next number")
+                if np.array_equal(self.desiredOutput, self.output):
+                    print("Solution Found for bitmap " + str(o) + ", moving to next number")
+                    plt.figure(o)
+                    plt.plot(self.sumSquareError)
+                    plt.ylabel('Sum Square Error')
+                    plt.xlabel('Epochs')
+                    plt.title('Sum Square Error vs. Epochs (' + str(o) + ')')
+                    plt.xlim(right=count)
+                    plt.xlim(left=startcount)
+
+                    plt.savefig(str(o))
+                    count += 1
+                    startcount = count
                     break
                 count += 1
 
