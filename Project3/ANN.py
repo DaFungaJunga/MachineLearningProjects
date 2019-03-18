@@ -148,11 +148,15 @@ class ANN:
         self.number = number
         self.threshold = 0.2
         self.learningRate = 0.2
+        self.perceptronNum = perceptrons
         self.hiddenPerceptrons = [Perceptron() for i in range(perceptrons)]
         self.workingBitmap = DigitBitmap(self.number)
 
     def initialization(self):
         self.workingBitmap.initialize()
+
+        for p in range(self.perceptronNum):
+            self.hiddenPerceptrons[p].initializeWeights()
 
         if self.number == 0:
             self.desiredOutput = [1, 0, 0, 0, 0, 0, 0, 0, 0, 0]
@@ -178,29 +182,43 @@ class ANN:
     def run(self):
         count = 0
         while count < self.epochs:
-            for p in range(self.hiddenPerceptrons.__sizeof__()):
+
+            for p in range(self.perceptronNum):
                 self.output[p] = 0
+
                 for i in range(9):
                     for j in range(5):
-                        self.output += (self.workingBitmap.bitmap[i][j] * self.hiddenPerceptrons[i].weight[j])
+                        self.output[p] += self.workingBitmap.bitmap[i][j] * self.hiddenPerceptrons[p].weight[i][j]
+
+
+
                 # adjust threshold value when testing for better results
-                print(self.output[p])
                 self.output[p] -= self.threshold
                 if self.output[p] >= 0:
                     self.output[p] = 1
                 else:
                     self.output[p] = 0
+
+
             mean = 0
-            for p in range(self.hiddenPerceptrons.__sizeof__()):
+
+            for p in range(self.perceptronNum):
                 mean += self.desiredOutput[p] - self.output[p]
                 for i in range(9):
                     for j in range(5):
-                        self.hiddenPerceptrons[p].updateWeight(i, j, self.workingBitmap.bitmap[i][j],
-                                                               (self.desiredOutput[p] - self.output[p]),
-                                                               self.learningRate)
-            mean = mean / self.hiddenPerceptrons.__sizeof__()
-            for p in range(self.hiddenPerceptrons.__sizeof__()):
+                        self.hiddenPerceptrons[p].updateWeight(i, j, self.workingBitmap.bitmap[i][j], (self.desiredOutput[p] - self.output[p]), self.learningRate)
+
+            mean = mean / self.perceptronNum
+
+            for p in range(self.perceptronNum):
                 self.sumSquareError[count] += ((self.desiredOutput[p] - self.output[p]) - mean) ** 2
-            print("Epoch: " + str(count) + " Desired Output: " + str(self.desiredOutput) + "Current Output: " + str(
-                self.output))
+
+            print("Epoch: " + str(count) + " Desired Output: " + str(self.desiredOutput) + " Current Output: " + str(self.output))
             count += 1
+
+
+
+
+ann = ANN(1000, 1, 2)
+ann.initialization()
+ann.run()
